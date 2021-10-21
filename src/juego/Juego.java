@@ -10,6 +10,7 @@ public class Juego extends InterfaceJuego
 	private Entorno entorno;
 	private Barbarianna barbarianna;
 	private Piso[] pisos = new Piso[5]; // null 
+	private Dinosaurio[] dinosaurios = new Dinosaurio[4];
 
 	// Variables y métodos propios de cada grupo
 	// ...
