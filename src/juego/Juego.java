@@ -29,9 +29,7 @@ public class Juego extends InterfaceJuego
 				this.pisos[3] = new Piso(300,210);
 				this.pisos[4] = new Piso(500,90);
 				
-		
-				
-
+	
 		// Inicia el juego!
 		this.entorno.iniciar();
 	}
