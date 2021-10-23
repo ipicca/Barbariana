@@ -60,13 +60,9 @@ public class Dinosaurio {
 			moverDerecha();
 		}
 	
-	
 	public int cantDinos() { //CHEQUEA LA CANTIDAD DE DINOS IN GAME
 		return cont;
 	}
-	
-	
-	
 	
 	//*public boolean enElSuelo() { // Chequea si esta tocando alguno de los niveles (VER EJE DE Y)
 		//if (this.y == 90 || this.y == 750 || this.y == 330|| this.y == 450|| this.y == 55)
@@ -74,10 +70,10 @@ public class Dinosaurio {
 		//return false;
 	//}*
 	
-	void caida() { // Si esta en el suelo.
-		if (enElSuelo() == false)
-		this.y = getY()+ 2;
-	}
+	//void caida() { // Si esta en el suelo.
+	//	if (enElSuelo() == false)
+	//	this.y = getY()+ 2;
+	//}
 	
 	public int getAncho() {
 		return ancho;
@@ -86,7 +82,6 @@ public class Dinosaurio {
 	public int getAlto() {
 		return alto;
 	}
-	
 	
 	public void dibujarse(Entorno entorno) {
 		//entorno.dibujarImagen(imagen, this.x, this.y, 0, 0.1); // 0.1= tamaño de la imagen
