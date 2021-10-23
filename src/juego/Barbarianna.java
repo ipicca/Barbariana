@@ -42,15 +42,45 @@ public class Barbarianna {
 
 	void moverIzquierda() {
 		this.x = this.x - 5;
-		this.direccion = "izquierda";
-		
+		this.direccion = "izquierda";		
 	}
 
 	void moverDerecha() {
 		this.x = this.x + 5;
-		this.direccion = "derecha";
-		
+		this.direccion = "derecha";		
 	}
+
+	
+	
+	public boolean enElSuelo() { // Chequea si barbarianna esta tocando alguno de los niveles (VER EJE DE Y)
+		if (this.y == 90 || this.y == 210 || this.y == 330|| this.y == 450|| this.y == 570)
+			return true;
+		return false;
+	}
+
+	void caida() { // Si el objeto esta en el suelo.
+		if (enElSuelo() == false)
+		this.y = getY()+ 2;
+	}
+
+	// CONTROLAR EL EJE DE Y PARA QUE SE AGACHE BIEN Y NO SE RECORTE EL ALTO.
+	
+	void agacharse() {	// Para que no se siga agachando hasta desaparecer.
+		if (this.alto >=40 ) 
+		this.alto = this.getAlto()-15;
+	}
+
+	void pararse() {	
+		if (this.alto <=40 ) // Para que no se pare y crezca demasiado.
+		this.alto = 80;
+	}
+
+	void saltar() { 
+		if (enElSuelo() == true) // Si esta tocando el suelo, puede saltar.
+		this.y = getY()-80;
+	}
+
+	
 	
 	public int getAncho() {
 		return ancho;

@@ -13,13 +13,14 @@ public class Dinosaurio {
 	private String direccion;
 	private Laser poder;
 	private int ancho, alto;
+	private int cont = 6;
 	
 	
 	public Dinosaurio(int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.ancho=30;
-		this.alto=80;
+		this.alto=60;
 		this.poder = null;
 		this.imagen = Herramientas.cargarImagen("images/barbariana.png");
 	}
@@ -41,15 +42,41 @@ public class Dinosaurio {
 	}
 
 	void moverIzquierda() {
-		this.x = this.x - 5;
+		this.x = this.x - 2;
 		this.direccion = "izquierda";
 		
 	}
 
 	void moverDerecha() {
-		this.x = this.x + 5;
+		this.x = this.x + 2;
 		this.direccion = "derecha";
 		
+	}
+	
+	void caminar() {
+		if (this.direccion == "izquierda") {
+			moverIzquierda();
+		}if (this.direccion == "derecha")
+			moverDerecha();
+		}
+	
+	
+	public int cantDinos() { //CHEQUEA LA CANTIDAD DE DINOS IN GAME
+		return cont;
+	}
+	
+	
+	
+	
+	//*public boolean enElSuelo() { // Chequea si esta tocando alguno de los niveles (VER EJE DE Y)
+		//if (this.y == 90 || this.y == 750 || this.y == 330|| this.y == 450|| this.y == 55)
+		//	return true;
+		//return false;
+	//}*
+	
+	void caida() { // Si esta en el suelo.
+		if (enElSuelo() == false)
+		this.y = getY()+ 2;
 	}
 	
 	public int getAncho() {
@@ -60,10 +87,11 @@ public class Dinosaurio {
 		return alto;
 	}
 	
-
+	
 	public void dibujarse(Entorno entorno) {
 		//entorno.dibujarImagen(imagen, this.x, this.y, 0, 0.1); // 0.1= tamaño de la imagen
 		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.GREEN);
+		direccion = "izquierda";
 	}
 	
 	public void crearLaser(Entorno entorno) {

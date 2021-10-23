@@ -6,6 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/datos/Desktop/Java/ProyectoBaseTP/ProyectoBaseTP/entorno.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Nachitu/Desktop/entorno.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

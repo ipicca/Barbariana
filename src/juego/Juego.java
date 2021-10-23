@@ -1,6 +1,5 @@
 package juego;
 
-
 import entorno.Entorno;
 import entorno.InterfaceJuego;
 
@@ -10,7 +9,7 @@ public class Juego extends InterfaceJuego
 	private Entorno entorno;
 	private Barbarianna barbarianna;
 	private Piso[] pisos = new Piso[5]; // null 
-	private Dinosaurio[] dinosaurios = new Dinosaurio[4];
+	private Dinosaurio dinosaurio;
 	private Computadora computadora;
 
 	// Variables y métodos propios de cada grupo
@@ -24,6 +23,7 @@ public class Juego extends InterfaceJuego
 		// Inicializar lo que haga falta para el juego
 		// ...
 		this.barbarianna = new Barbarianna(30, 570);
+		this.dinosaurio = new Dinosaurio (750, 55);
 		
 			
 				this.pisos[1] = new Piso(300,450);
@@ -48,8 +48,25 @@ public class Juego extends InterfaceJuego
 		
 		
 		// ...
-		if (barbarianna !=null) {
+		
+		if (barbarianna !=null) {					// CREAMOS A BARBARIANA
 			this.barbarianna.dibujarse(entorno);
+		}
+		
+		if (dinosaurio.cantDinos()<=6) {					// CREAMOS UN DINO SI Y SOLO SI HAY - DE 6
+			this.dinosaurio.dibujarse(entorno);
+		}
+		
+		if (dinosaurio != null && dinosaurio.getX() > 0+ dinosaurio.getAncho()/2 && dinosaurio.getX() < entorno.ancho() - dinosaurio.getAncho()/2) {
+			this.dinosaurio.moverIzquierda() ;
+			}
+		
+		//this.dinosaurio.moverIzquierda();
+		//this.dinosaurio.caminar();
+		
+		
+			
+
 			
 			if(entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && barbarianna.getX() > 0+barbarianna.getAncho()/2) {
 				barbarianna.moverIzquierda();
@@ -64,9 +81,26 @@ public class Juego extends InterfaceJuego
 					barbarianna.crearRayo(entorno);
 			}
 			
-			if (barbarianna.getRayo() != null)
-				this.barbarianna.efectuarRayo(entorno);
-		     
+			//VER FUNCIONALIDADES
+			
+			if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
+				barbarianna.agacharse();
+			} else {
+				barbarianna.pararse();
+			}
+
+			if (this.entorno.sePresiono(entorno.TECLA_ARRIBA)) {
+				barbarianna.saltar();
+			}
+			
+			if (barbarianna.enElSuelo()==false) {
+				barbarianna.caida();				// CHEQUEAR NOMBRE
+			}
+													
+			
+			
+			if (barbarianna.getRayo() != null) {
+				this.barbarianna.efectuarRayo(entorno);	     
 		}
 		
 		for (int i = 0; i < pisos.length; i++) {
