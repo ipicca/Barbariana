@@ -1,7 +1,9 @@
 package juego;
-
 import java.awt.Color;
 import java.awt.Image;
+import entorno.Entorno;
+import entorno.Herramientas;
+//import java.awt.Image;
 
 import entorno.Entorno;
 
@@ -10,11 +12,13 @@ public class Laser {
     private int y;
     private Image imagen;
     private double diametro;
+    private String direccion;
 
-    public Laser(int x, int y) {
+    public Laser(int x, int y, String direccion) {
         this.x = x;
         this.y = y;
-        //this.imagen = Herramientas.cargarImagen("images/.png");
+        this.direccion = direccion;
+       // this.imagen = Herramientas.cargarImagen("images/.png");
         this.diametro = 15;
     }
 
@@ -26,7 +30,9 @@ public class Laser {
         return y;
     }
     
-   
+    public String getDireccion() {
+        return direccion;
+    }
 
     void moverIzquierda() {
         this.x = this.x - 6;
@@ -35,7 +41,6 @@ public class Laser {
     void moverDerecha() {
         this.x = this.x + 6;
     }
-
 
     public void dibujarse(Entorno entorno) {
        // entorno.dibujarImagen(imagen, this.x, this.y, 0, 0.07);

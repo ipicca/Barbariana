@@ -49,8 +49,6 @@ public class Barbarianna {
 		this.x = this.x + 5;
 		this.direccion = "derecha";		
 	}
-
-	
 	
 	public boolean enElSuelo() { // Chequea si barbarianna esta tocando alguno de los niveles (VER EJE DE Y)
 		if (this.y == 90 || this.y == 210 || this.y == 330|| this.y == 450|| this.y == 570)

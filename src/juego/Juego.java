@@ -49,25 +49,25 @@ public class Juego extends InterfaceJuego
 		
 		// ...
 		
+		//CREAMOS A LOS INTERVINIENTES
+		
 		if (barbarianna !=null) {					// CREAMOS A BARBARIANA
 			this.barbarianna.dibujarse(entorno);
 		}
 		
-		if (dinosaurio.cantDinos()<=6) {					// CREAMOS UN DINO SI Y SOLO SI HAY - DE 6
+		if (dinosaurio.cantDinos()<=6) {					// CREAMOS UN DINO SI Y SOLO SI HAY >= 6
 			this.dinosaurio.dibujarse(entorno);
 		}
 		
+		
 		if (dinosaurio != null && dinosaurio.getX() > 0+ dinosaurio.getAncho()/2 && dinosaurio.getX() < entorno.ancho() - dinosaurio.getAncho()/2) {
 			this.dinosaurio.moverIzquierda() ;
-			}
+			}											// MOVIMIENTO DE DINOS
 		
 		//this.dinosaurio.moverIzquierda();
 		//this.dinosaurio.caminar();
-		
-		
-			
 
-			
+														// MOVIMIENTO BARBARIANNA
 			if(entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && barbarianna.getX() > 0+barbarianna.getAncho()/2) {
 				barbarianna.moverIzquierda();
 			}
@@ -75,13 +75,22 @@ public class Juego extends InterfaceJuego
 			if(entorno.estaPresionada(entorno.TECLA_DERECHA) && barbarianna.getX()  < entorno.ancho() - barbarianna.getAncho()/2) {
 				barbarianna.moverDerecha();
 			}
+							
+																	
+			if (barbarianna.getRayo() != null) {								// DISPARO BARBARIANNA
+				this.barbarianna.efectuarRayo(entorno);	     
+			}
 			
-			if (this.entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+			if (this.entorno.sePresiono(entorno.TECLA_ESPACIO)) {		
 				if (barbarianna.getRayo() == null)
 					barbarianna.crearRayo(entorno);
 			}
 			
-			//VER FUNCIONALIDADES
+			if (dinosaurio.getLaser() != null) {								// DISPAROS DINOS
+				this.dinosaurio.crearLaser(entorno);	     
+			}
+			
+						//VER FUNCIONALIDADES
 			
 			if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
 				barbarianna.agacharse();
@@ -94,14 +103,10 @@ public class Juego extends InterfaceJuego
 			}
 			
 			if (barbarianna.enElSuelo()==false) {
-				barbarianna.caida();				// CHEQUEAR NOMBRE
+				barbarianna.caida();				// CHEQUEAR NOMBRE "CAIDA"
 			}
 													
 			
-			
-			if (barbarianna.getRayo() != null) {
-				this.barbarianna.efectuarRayo(entorno);	     
-		}
 		
 		for (int i = 0; i < pisos.length; i++) {
 			if(this.pisos[i] != null)
@@ -110,7 +115,6 @@ public class Juego extends InterfaceJuego
 
 	}
 	
-
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args)

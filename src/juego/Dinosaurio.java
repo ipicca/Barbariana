@@ -59,7 +59,8 @@ public class Dinosaurio {
 		}if (this.direccion == "derecha")
 			moverDerecha();
 		}
-	
+
+
 	public int cantDinos() { //CHEQUEA LA CANTIDAD DE DINOS IN GAME
 		return cont;
 	}
@@ -92,8 +93,7 @@ public class Dinosaurio {
 	public void crearLaser(Entorno entorno) {
 			
 			if (this.direccion == null) return;
-			
-			this.poder = new Laser(this.x, this.y);
+			this.poder = new Laser(this.x, this.y, direccion);
 		}
 	
 }

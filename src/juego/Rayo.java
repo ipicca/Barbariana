@@ -1,9 +1,10 @@
 package juego;
 import java.awt.Color;
 import java.awt.Image;
-
 import entorno.Entorno;
 import entorno.Herramientas;
+//import java.awt.Image;
+
 public class Rayo {
 	private int x;
     private int y;
