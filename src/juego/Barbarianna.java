@@ -50,8 +50,11 @@ public class Barbarianna {
 		this.direccion = "derecha";		
 	}
 	
-	public boolean enElSuelo() { // Chequea si barbarianna esta tocando alguno de los niveles (VER EJE DE Y)
-		if (this.y == 90 || this.y == 210 || this.y == 330|| this.y == 450|| this.y == 570)
+	public boolean enElSuelo() { // Chequea si barbarianna esta tocando alguno de los niveles (VER EJE DE Y) En el eje x sólo toma las partes amarillas.
+		if ((this.y == 90 - this.getAlto()/2 && this.getX() + this.getAncho()/2>200)|| 
+				(this.y == 210 - this.getAlto()/2 && this.getX() -this.getAncho()/2<600) || 
+				(this.y == 330 - this.getAlto()/2 && this.getX() +this.getAncho()/2>200)||
+				(this.y == 450 - this.getAlto()/2 && this.getX() - this.getAncho()/2<600)|| this.y == 570)
 			return true;
 		return false;
 	}
@@ -81,6 +84,18 @@ public class Barbarianna {
 	void saltarMasALto() { 
 		if (enElSuelo() == true) // Si esta tocando el suelo, puede saltar.
 		this.y = getY()-110;
+	}
+	
+	void subirPiso() {
+		if(enElSuelo() == true && this.getX()>600) {
+			this.y =getY() -160;
+			this.x =getX() -80;
+		}
+		else {
+			if(enElSuelo() == true && this.getX()<200)
+				this.y=getY()-160;
+				this.x=getX()+80;
+		}
 	}
 	
 	

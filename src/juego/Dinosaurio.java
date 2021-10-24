@@ -65,16 +65,19 @@ public class Dinosaurio {
 		return cont;
 	}
 	
-	//*public boolean enElSuelo() { // Chequea si esta tocando alguno de los niveles (VER EJE DE Y)
-		//if (this.y == 90 || this.y == 750 || this.y == 330|| this.y == 450|| this.y == 55)
-		//	return true;
-		//return false;
-	//}*
-	
-	//void caida() { // Si esta en el suelo.
-	//	if (enElSuelo() == false)
-	//	this.y = getY()+ 2;
-	//}
+	public boolean enElSuelo() { // Chequea si barbarianna esta tocando alguno de los niveles (VER EJE DE Y) En el eje x sólo toma las partes amarillas.
+		if ((this.y == 90 - this.getAlto()/2 && this.getX() + this.getAncho()/2>200)|| 
+				(this.y == 210 - this.getAlto()/2 && this.getX() -this.getAncho()/2<600) || 
+				(this.y == 330 - this.getAlto()/2 && this.getX() +this.getAncho()/2>200)||
+				(this.y == 450 - this.getAlto()/2 && this.getX() -this.getAncho()/2<600)|| this.y == 570)
+			return true;
+		return false;
+	}
+
+	void caida() { // Si el objeto esta en el suelo.
+		if (enElSuelo() == false)
+		this.y = getY()+ 2;
+	}
 	
 	public int getAncho() {
 		return ancho;

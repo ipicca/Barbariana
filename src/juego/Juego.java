@@ -24,7 +24,7 @@ public class Juego extends InterfaceJuego
 		// Inicializar lo que haga falta para el juego
 		// ...
 		this.barbarianna = new Barbarianna(30, 570);
-		this.dinosaurio = new Dinosaurio (750, 55);
+		this.dinosaurio = new Dinosaurio (750, 20);
 		
 			
 				this.pisos[1] = new Piso(300,450);
@@ -121,6 +121,14 @@ public class Juego extends InterfaceJuego
 			
 			if (barbarianna.enElSuelo()==false) {
 				barbarianna.caida();				// CHEQUEAR NOMBRE "CAIDA"
+			}
+			
+			if(this.entorno.sePresiono('u')) {
+				if(this.estaDentroPiso(this.pisos[1]) || this.estaDentroPiso(this.pisos[2]) || this.estaDentroPiso(this.pisos[3]) || this.estaDentroPiso(this.pisos[4]))
+						barbarianna.subirPiso();
+			}
+			if(dinosaurio.enElSuelo()==false) {
+				dinosaurio.caida();
 			}
 													
 			
