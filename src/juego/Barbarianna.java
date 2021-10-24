@@ -77,7 +77,11 @@ public class Barbarianna {
 		if (enElSuelo() == true) // Si esta tocando el suelo, puede saltar.
 		this.y = getY()-80;
 	}
-
+	
+	void saltarMasALto() { 
+		if (enElSuelo() == true) // Si esta tocando el suelo, puede saltar.
+		this.y = getY()-110;
+	}
 	
 	
 	public int getAncho() {

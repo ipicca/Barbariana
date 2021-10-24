@@ -11,6 +11,7 @@ public class Juego extends InterfaceJuego
 	private Piso[] pisos = new Piso[5]; // null 
 	private Dinosaurio dinosaurio;
 	private Computadora computadora;
+	boolean tocaBordeY=false;
 
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -60,9 +61,19 @@ public class Juego extends InterfaceJuego
 		}
 		
 		
-		if (dinosaurio != null && dinosaurio.getX() > 0+ dinosaurio.getAncho()/2 && dinosaurio.getX() < entorno.ancho() - dinosaurio.getAncho()/2) {
+		if (dinosaurio != null && dinosaurio.getX() > 0+ dinosaurio.getAncho()/2 && tocaBordeY==false) 
 			this.dinosaurio.moverIzquierda() ;
-			}											// MOVIMIENTO DE DINOS
+		
+		if (dinosaurio.getX()==14)
+			tocaBordeY=true;
+		
+		
+		if (tocaBordeY==true)
+			if (dinosaurio.getX() < entorno.ancho() - dinosaurio.getAncho()/2)
+					this.dinosaurio.moverDerecha() ;
+		
+		if (dinosaurio.getX()==786) //cuando toca el extremo d
+			tocaBordeY=false;											// MOVIMIENTO DE DINOS
 		
 		//this.dinosaurio.moverIzquierda();
 		//this.dinosaurio.caminar();
@@ -99,8 +110,14 @@ public class Juego extends InterfaceJuego
 			}
 
 			if (this.entorno.sePresiono(entorno.TECLA_ARRIBA)) {
-				barbarianna.saltar();
+				if (this.estaDentroPiso(this.pisos[1])==false) // si esta por debajo de los pisos
+					barbarianna.saltar();						//hace un salto corto
+				
+				else
+					barbarianna.saltarMasALto(); // salta mas alto dentro de los huecos
+												 
 			}
+			
 			
 			if (barbarianna.enElSuelo()==false) {
 				barbarianna.caida();				// CHEQUEAR NOMBRE "CAIDA"
@@ -114,6 +131,25 @@ public class Juego extends InterfaceJuego
 		}
 
 	}
+	
+	
+	public boolean estaDentroPiso (Piso piso) {// pregunta si barbariana esta dentro del hueco
+											   // dependiendo del piso
+												// Esto tien que servir para los dinosaurios
+			
+	
+	if (barbarianna.getX() - barbarianna.getAncho()>= piso.getX()+piso.getAncho()/2
+		&& barbarianna.getX()-barbarianna.getAncho() <= entorno.ancho() ||
+		
+		barbarianna.getX()+barbarianna.getAncho()>=0 && 
+		barbarianna.getX()+barbarianna.getAncho()<= piso.getX() - piso.getAncho()/2)
+	
+		return true;
+	
+	
+	return false;
+	}
+	
 	
 
 	@SuppressWarnings("unused")
