@@ -1,5 +1,8 @@
 package juego;
 
+import java.awt.Color;
+import java.awt.Font;
+
 import entorno.Entorno;
 import entorno.InterfaceJuego;
 
@@ -9,9 +12,15 @@ public class Juego extends InterfaceJuego
 	private Entorno entorno;
 	private Barbarianna barbarianna;
 	private Piso[] pisos = new Piso[5]; // null 
-	private Dinosaurio dinosaurio;
-	private Computadora computadora;
-	boolean tocaBordeY=false;
+	private Dinosaurio [] dinosaurios= new Dinosaurio[4];
+	//private Computadora computadora;
+	
+	private boolean[] tocaBordeYDinos = { false, false, false, false };
+	private int[] contSegundos = {0,0,0,0};
+	private int puntos=0;;
+	
+	
+	
 
 	// Variables y métodos propios de cada grupo
 	// ...
@@ -23,14 +32,21 @@ public class Juego extends InterfaceJuego
 		
 		// Inicializar lo que haga falta para el juego
 		// ...
-		this.barbarianna = new Barbarianna(30, 570);
-		this.dinosaurio = new Dinosaurio (750, 20);
+		int xDinos=700;
+		int yDinos=20;
 		
-			
-				this.pisos[1] = new Piso(300,450);
-				this.pisos[2] = new Piso(500,330);
-				this.pisos[3] = new Piso(300,210);
-				this.pisos[4] = new Piso(500,90);
+		this.barbarianna = new Barbarianna(30, 570);
+		
+	
+		for (int i=0;i<this.dinosaurios.length;i++) {
+			this.dinosaurios[i]= new Dinosaurio (xDinos,yDinos);
+			xDinos=xDinos-100;
+		}
+		
+		this.pisos[1] = new Piso(300,450);
+		this.pisos[2] = new Piso(500,330);
+		this.pisos[3] = new Piso(300,210);
+		this.pisos[4] = new Piso(500,90);
 				
 	
 		// Inicia el juego!
@@ -48,47 +64,30 @@ public class Juego extends InterfaceJuego
 		// Procesamiento de un instante de tiempo
 		
 		
+		//kills dinosuarios
+		entorno.cambiarFont(Font.SANS_SERIF, 25, Color.RED);
+		entorno.escribirTexto("Kills: " + this.puntos, 7, 23);
+		
 		// ...
 		
 		//CREAMOS A LOS INTERVINIENTES
 		
-		if (barbarianna !=null) {					// CREAMOS A BARBARIANA
+		if (barbarianna !=null) {// If principal de Barbariana
+			
 			this.barbarianna.dibujarse(entorno);
-		}
-		
-		if (dinosaurio.cantDinos()<=6) {					// CREAMOS UN DINO SI Y SOLO SI HAY >= 6
-			this.dinosaurio.dibujarse(entorno);
-		}
-		
-		
-		if (dinosaurio != null && dinosaurio.getX() > 0+ dinosaurio.getAncho()/2 && tocaBordeY==false) 
-			this.dinosaurio.moverIzquierda() ;
-		
-		if (dinosaurio.getX()==14)
-			tocaBordeY=true;
-		
-		
-		if (tocaBordeY==true)
-			if (dinosaurio.getX() < entorno.ancho() - dinosaurio.getAncho()/2)
-					this.dinosaurio.moverDerecha() ;
-		
-		if (dinosaurio.getX()==786) //cuando toca el extremo d
-			tocaBordeY=false;											// MOVIMIENTO DE DINOS
-		
-		//this.dinosaurio.moverIzquierda();
-		//this.dinosaurio.caminar();
-
-														// MOVIMIENTO BARBARIANNA
+			
+			// MOVIMIENTO BARBARIANNA
 			if(entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && barbarianna.getX() > 0+barbarianna.getAncho()/2) {
 				barbarianna.moverIzquierda();
 			}
 			
-			if(entorno.estaPresionada(entorno.TECLA_DERECHA) && barbarianna.getX()  < entorno.ancho() - barbarianna.getAncho()/2) {
+			if(entorno.estaPresionada(entorno.TECLA_DERECHA) && 
+			   barbarianna.getX()  < entorno.ancho() - barbarianna.getAncho()/2) {
 				barbarianna.moverDerecha();
 			}
 							
 																	
-			if (barbarianna.getRayo() != null) {								// DISPARO BARBARIANNA
+			if (barbarianna.getRayo() != null) {// DISPARO BARBARIANNA
 				this.barbarianna.efectuarRayo(entorno);	     
 			}
 			
@@ -97,62 +96,137 @@ public class Juego extends InterfaceJuego
 					barbarianna.crearRayo(entorno);
 			}
 			
-			if (dinosaurio.getLaser() != null) {								// DISPAROS DINOS
-				this.dinosaurio.crearLaser(entorno);	     
-			}
 			
-						//VER FUNCIONALIDADES
+			//VER FUNCIONALIDADES
 			
 			if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
 				barbarianna.agacharse();
+				
+
 			} else {
 				barbarianna.pararse();
+				
 			}
 
-			if (this.entorno.sePresiono(entorno.TECLA_ARRIBA)) {
-				if (this.estaDentroPiso(this.pisos[1])==false) // si esta por debajo de los pisos
-					barbarianna.saltar();						//hace un salto corto
-				
-				else
-					barbarianna.saltarMasALto(); // salta mas alto dentro de los huecos
-												 
-			}
+			if (this.entorno.sePresiono(entorno.TECLA_ARRIBA)) 
+				//if (this.estaDentroPiso(this.pisos[1])==false) // si esta por debajo de los pisos
+					barbarianna.saltar();//hace un salto corto				
+		
 			
-			
-			if (barbarianna.enElSuelo()==false) {
-				barbarianna.caida();				// CHEQUEAR NOMBRE "CAIDA"
+			if (barbarianna.enElSuelo()==false ) {
+				barbarianna.caida();// CHEQUEAR NOMBRE "CAIDA"
 			}
 			
 			if(this.entorno.sePresiono('u')) {
-				if(this.estaDentroPiso(this.pisos[1]) || this.estaDentroPiso(this.pisos[2]) || this.estaDentroPiso(this.pisos[3]) || this.estaDentroPiso(this.pisos[4]))
+				if(this.estaDentroPiso(this.pisos[1]) || 
+				   this.estaDentroPiso(this.pisos[2]) || 
+				   this.estaDentroPiso(this.pisos[3]) ||
+				   this.estaDentroPiso(this.pisos[4]))
 						barbarianna.subirPiso();
 			}
-			if(dinosaurio.enElSuelo()==false) {
-				dinosaurio.caida();
-			}
-													
 			
+		} // FIN del if principal Barbarianna 
 		
+		 
+			for (int i=0;i<this.dinosaurios.length;i++) {// INICIO ciclo de DINOSAURIOS
+				
+				if (dinosaurios[i]!=null) { // INICIO if principal de DINOS
+					
+					this.dinosaurios[i].dibujarse(entorno);
+					
+					/*if (this.dinosaurios[i].cantDinos()<=4) //CREAMOS UN DINO SI Y SOLO SI HAY >= 6
+						
+						this.dinosaurios[i].dibujarse(entorno);*/
+				
+					if (this.dinosaurios[i].getX() > 0+ this.dinosaurios[i].getAncho()/2 && tocaBordeYDinos[i]==false) 
+						this.dinosaurios[i].moverIzquierda() ;
+					
+					if (this.dinosaurios[i].getX()==14)
+						tocaBordeYDinos[i]=true;
+					
+					if (tocaBordeYDinos[i]==true)
+						if (this.dinosaurios[i].getX() < entorno.ancho() - this.dinosaurios[i].getAncho()/2)
+							this.dinosaurios[i].moverDerecha() ;
+					
+					if (this.dinosaurios[i].getX()==786) //cuando toca el extremo d
+						tocaBordeYDinos[i]=false;
+					
+					//chequea si el disparo del rayo choca contra un dinosaurio, no setea en null
+					if (barbarianna != null && this.dinosaurios[i].choqueRayo(barbarianna.getRayo())) {
+						
+						barbarianna.setRayo(null);
+						this.dinosaurios[i] = null;
+						this.puntos++; // cuenta los dinos muertos
+					
+					}
+					
+					if(this.dinosaurios[i]!=null ) 
+						if(this.dinosaurios[i].enElSuelo()==false) 
+							this.dinosaurios[i].caida();
+						
+						
+					// INICIO DISPARO DINOS
+					
+					/*if (this.dinosaurios[0].getLaser()!=null)
+						this.dinosaurios[0].efectuarLaser(entorno);
+				
+					if (this.dinosaurios[0].getLaser() == null) 								
+						this.dinosaurios[0].crearLaser(entorno);	     
+						
+					// FIN disparo dinos*/
+				
+				}//FIN if principal de DINOS
+				
+				else {
+					
+					// Reaparecen los dinosaurios 
+					
+					contSegundos[i] = contSegundos[i] + 1;
+					
+					if (contSegundos[i]> 600){ //cuando cuenta mas de 600 tick crea otro dino
+						
+						int xDinos=780;
+						int yDinos=20;
+						
+						dinosaurios[i]= new Dinosaurio (xDinos,yDinos);
+						contSegundos[i] = 0; //seteo en 0 para el proximo dinosuario
+					}
+					
+				}
+				
+			}// FIN ciclo de DINOSAURIOS
+										
+			
+		// DIBUJAMOS los pisos
 		for (int i = 0; i < pisos.length; i++) {
 			if(this.pisos[i] != null)
 				this.pisos[i].dibujarPiso(entorno);
 		}
-
+		
+		
+		
+		
 	}
 	
 	
-	public boolean estaDentroPiso (Piso piso) {// pregunta si barbariana esta dentro del hueco
-											   // dependiendo del piso
+	public boolean estaDentroPiso (Piso piso) {// pregunta si barbariana esta dentro del hueco dependiendo del piso
 												// Esto tien que servir para los dinosaurios
-			
 	
-	if (barbarianna.getX() - barbarianna.getAncho()>= piso.getX()+piso.getAncho()/2
-		&& barbarianna.getX()-barbarianna.getAncho() <= entorno.ancho() ||
+	
+		if (barbarianna.getX() - barbarianna.getAncho()>= piso.getX()+piso.getAncho()/2
+		&& barbarianna.getX()-barbarianna.getAncho() <= entorno.ancho() &&
+		
+		barbarianna.getY() - barbarianna.getAlto()>= piso.getY()+piso.getAlto()/2
+		&& barbarianna.getY()-barbarianna.getAlto() <= entorno.alto()||
 		
 		barbarianna.getX()+barbarianna.getAncho()>=0 && 
-		barbarianna.getX()+barbarianna.getAncho()<= piso.getX() - piso.getAncho()/2)
+		barbarianna.getX()+barbarianna.getAncho()<= piso.getX() - piso.getAncho()/2 &&
+		
+		barbarianna.getY()+barbarianna.getAlto()>=0 && 
+		barbarianna.getY()+barbarianna.getAlto()<= piso.getY() - piso.getAlto()/2)
+			
 	
-		return true;
+			return true;
 	
 	
 	return false;

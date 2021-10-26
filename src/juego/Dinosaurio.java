@@ -99,4 +99,14 @@ public class Dinosaurio {
 			this.poder = new Laser(this.x, this.y, direccion);
 		}
 	
+	 public boolean choqueRayo(Rayo rayo) {//colision entre reyo de barbariana y los dinos
+	    	if (rayo == null) 
+	    		return false;
+	    	
+	    	if(Math.abs(this.x-rayo.getX())<=15 && Math.abs(this.y-rayo.getY())<=60){
+		        return true;
+		    }
+	    	return false;
+	    }
+	
 }
