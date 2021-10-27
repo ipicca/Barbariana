@@ -164,15 +164,17 @@ public class Juego extends InterfaceJuego
 						if(this.dinosaurios[i].enElSuelo()==false) 
 							this.dinosaurios[i].caida();
 						
-						
+					
 					// INICIO DISPARO DINOS
 					
-					if (this.dinosaurios[0].getLaser()!=null)
-						this.dinosaurios[0].efectuarLaser(entorno);
+					/*
+					if (this.dinosaurios[i].getLaser()!=null)
+						this.dinosaurios[i].efectuarLaser(entorno);
 				
-					if (this.dinosaurios[0].getLaser() == null) 								
-						this.dinosaurios[0].crearLaser(entorno);	     
-						
+					if (this.dinosaurios[i].getLaser() == null) 								
+						this.dinosaurios[i].crearLaser(entorno);	     
+					*/
+					
 					// FIN disparo dinos
 				
 				}//FIN if principal de DINOS
