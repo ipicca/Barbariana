@@ -99,6 +99,28 @@ public class Dinosaurio {
 			this.poder = new Laser(this.x, this.y, direccion);
 		}
 	
+	public void efectuarLaser(Entorno entorno) {
+			
+			this.poder.dibujarse(entorno);
+			
+			switch (this.poder.getDireccion()) {
+			
+			case "derecha":
+				this.poder.moverDerecha();
+				break;
+				
+			case "izquierda":
+				this.poder.moverIzquierda();
+				break;
+			}
+			
+			// Cuando el rayo toque algun borde vuelvo el objeto rayo a null 
+		
+			if (this.poder.getX() <= 0 || this.poder.getX() >= entorno.ancho()  ) {	
+				this.poder = null;
+			}
+		}
+	
 	 public boolean choqueRayo(Rayo rayo) {//colision entre reyo de barbariana y los dinos
 	    	if (rayo == null) 
 	    		return false;

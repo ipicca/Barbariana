@@ -167,13 +167,13 @@ public class Juego extends InterfaceJuego
 						
 					// INICIO DISPARO DINOS
 					
-					/*if (this.dinosaurios[0].getLaser()!=null)
+					if (this.dinosaurios[0].getLaser()!=null)
 						this.dinosaurios[0].efectuarLaser(entorno);
 				
 					if (this.dinosaurios[0].getLaser() == null) 								
 						this.dinosaurios[0].crearLaser(entorno);	     
 						
-					// FIN disparo dinos*/
+					// FIN disparo dinos
 				
 				}//FIN if principal de DINOS
 				
@@ -216,9 +216,9 @@ public class Juego extends InterfaceJuego
 		if (barbarianna.getX() - barbarianna.getAncho()>= piso.getX()+piso.getAncho()/2
 		&& barbarianna.getX()-barbarianna.getAncho() <= entorno.ancho() &&
 		
-		barbarianna.getY() - barbarianna.getAlto()>= piso.getY()+piso.getAlto()/2
+		/*barbarianna.getY() - barbarianna.getAlto()>= piso.getY()+piso.getAlto()/2
 		&& barbarianna.getY()-barbarianna.getAlto() <= entorno.alto()||
-		
+		*/
 		barbarianna.getX()+barbarianna.getAncho()>=0 && 
 		barbarianna.getX()+barbarianna.getAncho()<= piso.getX() - piso.getAncho()/2 &&
 		
