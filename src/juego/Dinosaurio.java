@@ -37,7 +37,7 @@ public class Dinosaurio {
 		return poder;
 	}
 
-	void setRayo(Laser laser) {
+	void setLaser(Laser laser) {
 		this.poder = laser;
 	}
 
@@ -130,5 +130,27 @@ public class Dinosaurio {
 		    }
 	    	return false;
 	    }
+	 
+	 public boolean choqueBarbariannaDino(Barbarianna barb) {//colision entre reyo de barbariana y los dinos
+	    	
+		 if (barb == null) 
+	    		return false;
+	    	
+	    	if(Math.abs(this.x-barb.getX())<=25 && Math.abs(this.y-barb.getY())<=27){
+		        return true;
+		    }
+	    	return false;
+	    }
+	 
+	 public boolean choqueRayoLaser(Rayo rayo) {//colision entre reyo de barbariana y los  laser dinos
+		 if (rayo == null) 
+	    		return false;
+	    	
+	    	if(Math.abs(this.poder.getX()-rayo.getX())<=10 && Math.abs(this.poder.getY()-rayo.getY())<=27){
+		        return true;
+		    }
+	    	return false;
+		
+	 }
 	
 }
