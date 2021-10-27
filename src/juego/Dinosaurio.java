@@ -121,7 +121,7 @@ public class Dinosaurio {
 			}
 		}
 	
-	 public boolean choqueRayo(Rayo rayo) {//colision entre reyo de barbariana y los dinos
+	 public boolean choqueRayoDino(Rayo rayo) {//colision entre reyo de barbariana y los dinos
 	    	if (rayo == null) 
 	    		return false;
 	    	

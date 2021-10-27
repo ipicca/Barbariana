@@ -17,7 +17,8 @@ public class Juego extends InterfaceJuego
 	
 	private boolean[] tocaBordeYDinos = { false, false, false, false };
 	private int[] contSegundos = {0,0,0,0};
-	private int puntos=0;;
+	private int puntos=0;
+	private int vidas=3;
 	
 	
 	
@@ -67,6 +68,11 @@ public class Juego extends InterfaceJuego
 		//kills dinosuarios
 		entorno.cambiarFont(Font.SANS_SERIF, 25, Color.RED);
 		entorno.escribirTexto("Kills: " + this.puntos, 7, 23);
+		
+		//vidas de Barbarianna
+		entorno.cambiarFont(Font.SANS_SERIF, 25, Color.pink);
+		entorno.escribirTexto("♥ " + this.vidas, 100, 23);
+				// ...
 		
 		// ...
 		
@@ -128,75 +134,102 @@ public class Juego extends InterfaceJuego
 		} // FIN del if principal Barbarianna 
 		
 		 
-			for (int i=0;i<this.dinosaurios.length;i++) {// INICIO ciclo de DINOSAURIOS
+		for (int i=0;i<this.dinosaurios.length;i++) {// INICIO ciclo de DINOSAURIOS
+			
+			if (dinosaurios[i]!=null) { // INICIO if principal de DINOS
 				
-				if (dinosaurios[i]!=null) { // INICIO if principal de DINOS
-					
-					this.dinosaurios[i].dibujarse(entorno);
-					
-					/*if (this.dinosaurios[i].cantDinos()<=4) //CREAMOS UN DINO SI Y SOLO SI HAY >= 6
-						
-						this.dinosaurios[i].dibujarse(entorno);*/
+				this.dinosaurios[i].dibujarse(entorno);
 				
-					if (this.dinosaurios[i].getX() > 0+ this.dinosaurios[i].getAncho()/2 && tocaBordeYDinos[i]==false) 
-						this.dinosaurios[i].moverIzquierda() ;
+
+			
+				if (this.dinosaurios[i].getX() > 0+ this.dinosaurios[i].getAncho()/2 && tocaBordeYDinos[i]==false) 
+					this.dinosaurios[i].moverIzquierda() ;
+				
+				
+				if (this.dinosaurios[i].getX()==14)
+					tocaBordeYDinos[i]=true;
+				
+				
+				if (tocaBordeYDinos[i]==true)
+					if (this.dinosaurios[i].getX() < entorno.ancho() - this.dinosaurios[i].getAncho()/2)
+						this.dinosaurios[i].moverDerecha() ;
+				
+				
+				if (this.dinosaurios[i].getX()==786) //cuando toca el extremo d
+					tocaBordeYDinos[i]=false;
+				
+				
+				if (dinosaurios[i]!=null)
 					
-					if (this.dinosaurios[i].getX()==14)
-						tocaBordeYDinos[i]=true;
-					
-					if (tocaBordeYDinos[i]==true)
-						if (this.dinosaurios[i].getX() < entorno.ancho() - this.dinosaurios[i].getAncho()/2)
-							this.dinosaurios[i].moverDerecha() ;
-					
-					if (this.dinosaurios[i].getX()==786) //cuando toca el extremo d
-						tocaBordeYDinos[i]=false;
-					
-					//chequea si el disparo del rayo choca contra un dinosaurio, no setea en null
-					if (barbarianna != null && this.dinosaurios[i].choqueRayo(barbarianna.getRayo())) {
+				//chequea si el disparo del rayo choca contra un dinosaurio, no setea en null
+					if (barbarianna != null && this.dinosaurios[i].choqueRayoDino(barbarianna.getRayo())) {
 						
 						barbarianna.setRayo(null);
 						this.dinosaurios[i] = null;
 						this.puntos++; // cuenta los dinos muertos
 					
 					}
-					
-					if(this.dinosaurios[i]!=null ) 
-						if(this.dinosaurios[i].enElSuelo()==false) 
-							this.dinosaurios[i].caida();
-						
-					
+				
+			  if (dinosaurios[i]!=null) {
+				  
+					if(this.dinosaurios[i].enElSuelo()==false) 
+						this.dinosaurios[i].caida();
+			  		
+				
 					// INICIO DISPARO DINOS
+					if (i==1) {// solo dispara un dinosuario
+					
+						if (this.dinosaurios[i].getLaser()!=null)
+							this.dinosaurios[i].efectuarLaser(entorno);
+						
+						if (this.dinosaurios[i].getLaser() == null) 								
+							this.dinosaurios[i].crearLaser(entorno);	     
+					}
+					// FIN disparo dinos
+			
+					
+					// COLISION entre Barbarianna y Dinos	
+					if (this.dinosaurios[i].choqueBarbariannaDino(barbarianna)) {
+						barbarianna=null;
+						vidas--;
+						}
+					
 					
 					/*
-					if (this.dinosaurios[i].getLaser()!=null)
-						this.dinosaurios[i].efectuarLaser(entorno);
+					// COLISION entre rayo y laser (SOLO DESAPARECE EL RAYO)
+					if (barbarianna!=null)
+						if (this.dinosaurios[i].choqueRayoLaser(barbarianna.getRayo())  )
+							
+							barbarianna.setRayo(null); 
+					 */ //ROMPEEEEE TODO EL PROGRAMA, REVISAR! 
+					
+			  		}
+			
+	
+			
+			
+			}//FIN if principal de DINOS
+			
+			else {//INICIO del ELSE principal de DINOS
 				
-					if (this.dinosaurios[i].getLaser() == null) 								
-						this.dinosaurios[i].crearLaser(entorno);	     
-					*/
-					
-					// FIN disparo dinos
+				// Reaparecen los dinosaurios 
 				
-				}//FIN if principal de DINOS
+				contSegundos[i] = contSegundos[i] + 1;
 				
-				else {
+				if (contSegundos[i]> 600){ //cuando cuenta mas de 600 tick crea otro dino
 					
-					// Reaparecen los dinosaurios 
+					int xDinos=780;
+					int yDinos=20;
 					
-					contSegundos[i] = contSegundos[i] + 1;
-					
-					if (contSegundos[i]> 600){ //cuando cuenta mas de 600 tick crea otro dino
-						
-						int xDinos=780;
-						int yDinos=20;
-						
-						dinosaurios[i]= new Dinosaurio (xDinos,yDinos);
-						contSegundos[i] = 0; //seteo en 0 para el proximo dinosuario
-					}
-					
+					dinosaurios[i]= new Dinosaurio (xDinos,yDinos);
+					contSegundos[i] = 0; //seteo en 0 para el proximo dinosuario
 				}
 				
-			}// FIN ciclo de DINOSAURIOS
+	
+				
+			}//FIN del ELSE principal de DINOS
+			
+		}// FIN ciclo de DINOSAURIOS
 										
 			
 		// DIBUJAMOS los pisos
