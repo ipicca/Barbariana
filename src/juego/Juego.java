@@ -41,7 +41,7 @@ public class Juego extends InterfaceJuego
 	
 		for (int i=0;i<this.dinosaurios.length;i++) {
 			this.dinosaurios[i]= new Dinosaurio (xDinos,yDinos);
-			xDinos=xDinos-100;
+			xDinos=xDinos-150;
 		}
 		
 		this.pisos[1] = new Piso(300,450);
@@ -77,7 +77,6 @@ public class Juego extends InterfaceJuego
 		// ...
 		
 		//CREAMOS A LOS INTERVINIENTES
-		
 		if (barbarianna !=null) {// If principal de Barbariana
 			
 			this.barbarianna.dibujarse(entorno);
@@ -133,8 +132,10 @@ public class Juego extends InterfaceJuego
 			
 		} // FIN del if principal Barbarianna 
 		
+		
 		 
 		for (int i=0;i<this.dinosaurios.length;i++) {// INICIO ciclo de DINOSAURIOS
+			
 			
 			if (dinosaurios[i]!=null) { // INICIO if principal de DINOS
 				
@@ -169,6 +170,8 @@ public class Juego extends InterfaceJuego
 						this.puntos++; // cuenta los dinos muertos
 					
 					}
+				
+					
 				
 			  if (dinosaurios[i]!=null) {
 				  
@@ -265,6 +268,10 @@ public class Juego extends InterfaceJuego
 	
 	
 	return false;
+	}
+	
+	void accionesBarbarianna () {
+		
 	}
 	
 	

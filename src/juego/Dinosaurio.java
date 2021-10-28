@@ -121,36 +121,52 @@ public class Dinosaurio {
 			}
 		}
 	
-	 public boolean choqueRayoDino(Rayo rayo) {//colision entre reyo de barbariana y los dinos
-	    	if (rayo == null) 
-	    		return false;
-	    	
-	    	if(Math.abs(this.x-rayo.getX())<=15 && Math.abs(this.y-rayo.getY())<=60){
-		        return true;
+	//1
+		 public boolean choqueRayoDino(Rayo rayo) {//colision entre reyo de barbariana y los dinos
+		    	
+			 if (rayo == null) 
+		    		return false;
+		    	
+		    	if(Math.abs(this.x-rayo.getX())<=15 && Math.abs(this.y-rayo.getY())<=27){
+			        return true;
+			    }
+		    	return false;
 		    }
-	    	return false;
-	    }
-	 
-	 public boolean choqueBarbariannaDino(Barbarianna barb) {//colision entre reyo de barbariana y los dinos
-	    	
-		 if (barb == null) 
-	    		return false;
-	    	
-	    	if(Math.abs(this.x-barb.getX())<=25 && Math.abs(this.y-barb.getY())<=27){
-		        return true;
+		 
+		//2
+		 public boolean choqueLaserBarba(Barbarianna barb) {//colision entre laser de los dinos y barbarianna 
+			 if (this.poder == null) 
+		    		return false;
+		    	
+		    	if(Math.abs(this.poder.getX() -barb.getX())<=15 && Math.abs(this.poder.getY() -barb.getY())<=27){
+			        return true;
+			    }
+		    	return false;
 		    }
-	    	return false;
-	    }
-	 
-	 public boolean choqueRayoLaser(Rayo rayo) {//colision entre reyo de barbariana y los  laser dinos
-		 if (rayo == null) 
-	    		return false;
-	    	
-	    	if(Math.abs(this.poder.getX()-rayo.getX())<=10 && Math.abs(this.poder.getY()-rayo.getY())<=27){
-		        return true;
+		 
+		 
+		//3
+		 public boolean choqueBarbariannaDino(Barbarianna barb) {//colision entre los personajes 
+			 if (barb != null) 
+		    	if(Math.abs(this.x-barb.getX())<=25 && Math.abs(this.y-barb.getY())<=27){
+			        return true;
+			    }
+		    return false;
+		    
 		    }
-	    	return false;
-		
-	 }
+		 
+		 //4
+		 public boolean choqueRayoLaser(Rayo rayo) {//colision entre rayo y laser
+			 if (rayo == null) 
+				 
+		    		return false;
+		    	
+		    	if(Math.abs(this.poder.getX()-rayo.getX())<=10 && Math.abs(this.poder.getY()-rayo.getY())<=27){
+			        return true;
+			    }
+		    	return false;
+			
+		 }
+		 
 	
 }
