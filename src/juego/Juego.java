@@ -12,7 +12,7 @@ public class Juego extends InterfaceJuego
 	private Entorno entorno;
 	private Barbarianna barbarianna;
 	private Piso[] pisos = new Piso[5]; // null 
-	private Dinosaurio [] dinosaurios= new Dinosaurio[4];
+	private Dinosaurio [] dinosaurios= new Dinosaurio[1];
 	//private Computadora computadora;
 	
 	private boolean[] tocaBordeYDinos = { false, false, false, false };
@@ -20,7 +20,7 @@ public class Juego extends InterfaceJuego
 	private int puntos=0;
 	private int vidas=3;
 	private int contDisparos=0;
-	
+	private boolean tocoBarbariana=true;
 	
 	
 
@@ -62,7 +62,7 @@ public class Juego extends InterfaceJuego
 	 * (ver el enunciado del TP para mayor detalle).
 	 */
 	public void tick()
-	{
+	{//INICIO DEL TICK
 		// Procesamiento de un instante de tiempo
 		
 		
@@ -77,165 +77,13 @@ public class Juego extends InterfaceJuego
 		
 		//CREAMOS A LOS INTERVINIENTES
 		
-		// DIBUJAMOS los pisos
-		for (int i = 0; i < pisos.length; i++) {
-			if(this.pisos[i] != null)
-				this.pisos[i].dibujarPiso(entorno);
-		}
 		
-		if (barbarianna !=null) {// If principal de Barbariana
-			
-			
-			this.barbarianna.dibujarse(entorno);
-			
-			// MOVIMIENTO BARBARIANNA
-			if(entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && barbarianna.getX() > 0+barbarianna.getAncho()/2) {
-				barbarianna.moverIzquierda();
-			}
-			
-			if(entorno.estaPresionada(entorno.TECLA_DERECHA) && 
-			   barbarianna.getX()  < entorno.ancho() - barbarianna.getAncho()/2) {
-				barbarianna.moverDerecha();
-			}
-							
-																	
-			if (barbarianna.getRayo() != null) {// DISPARO BARBARIANNA
-				this.barbarianna.efectuarRayo(entorno);	     
-			}
-			
-			if (this.entorno.sePresiono(entorno.TECLA_ESPACIO)) {		
-				if (barbarianna.getRayo() == null)
-					barbarianna.crearRayo(entorno);
-			}
-			
-			
-			//VER FUNCIONALIDADES
-			
-			if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
-				barbarianna.agacharse();
-				
-
-			} else {
-				barbarianna.pararse();
-				
-			}
-
-			if (this.entorno.sePresiono(entorno.TECLA_ARRIBA))
-					barbarianna.saltar();//hace un salto corto				
-			
-			
-			if (barbarianna.enElSuelo()==false ) {
-				barbarianna.caida();// CHEQUEAR NOMBRE "CAIDA"
-			}
-			
+		this.inicializarBarbarianna();
+		this.inicializarPisos();
+		this.inicializarDinosaurios();
 		
-			
-		} // FIN del if principal Barbarianna 
 		
 		 
-			for (int i=0;i<this.dinosaurios.length;i++) {// INICIO ciclo de DINOSAURIOS
-				
-				if (dinosaurios[i]!=null) { // INICIO if principal de DINOS
-					
-					this.dinosaurios[i].dibujarse(entorno);
-					
-
-					// INICIO MOVIMIENTOS DE LOS DINOSAURIOS
-					
-					if (this.dinosaurios[i].getX() > 0+ this.dinosaurios[i].getAncho()/2 && tocaBordeYDinos[i]==false) 
-						this.dinosaurios[i].moverIzquierda() ;
-					
-					
-					if (this.dinosaurios[i].getX()==14)//Verifica toca el extremo izq del eje y
-						tocaBordeYDinos[i]=true;
-					
-					
-					if (tocaBordeYDinos[i]==true) {
-						
-						if (this.dinosaurios[i].getX() < entorno.ancho() - this.dinosaurios[i].getAncho()/2)
-							this.dinosaurios[i].moverDerecha() ;
-						
-							}
-					
-					if (this.dinosaurios[i].getX()==786) //Verifica toca el extremo derecho del eje y
-						tocaBordeYDinos[i]=false;
-					
-					// FIN MOVIMIENTOS DE LOS DINOSUARIOS
-					
-					
-					if (dinosaurios[i]!=null) {
-						
-						if (barbarianna != null && this.dinosaurios[i].choqueRayoDino(barbarianna.getRayo())) {
-							//VERIFICA SI EL DISPARO DEL RAYO DE BARBARIANNA COLOSIONA CONTRA UN DINISARIOS Y LO ELIMINA 
-							
-							barbarianna.setRayo(null);
-							this.dinosaurios[i] = null;
-							this.puntos++; // cuenta los dinos muertos
-						
-							}
-					
-						}
-				
-			
-					  if (dinosaurios[i]!=null) {
-						  
-						  
-						  	//
-						
-							if(this.dinosaurios[i].enElSuelo()==false) {
-								this.dinosaurios[i].caida();
-							}
-							
-				
-							if (this.dinosaurios[i].choqueBarbariannaDino(barbarianna)) {
-								//BARBARINA TOCA UN DINO O LA TOCAN A ELLA, PIERDE UNA VIDA
-									
-								barbarianna=null;
-								vidas--;
-								}
-					
-										
-							// INICIO DISPARO DINOS
-							
-								
-							if (i==1) {// solo dispara un dinosuario
-									
-								// INICIO DISPARO DINOS												
-								if (this.dinosaurios[i].getLaser() == null && this.dinosaurios[i].enElSuelo())  								
-									this.dinosaurios[i].crearLaser(entorno);
-										
-								if (this.dinosaurios[i].getLaser()!=null )
-									this.dinosaurios[i].efectuarLaser(entorno);
-							
-								}// FIN disparo dinos
-							
-					  		}
-											
-												
-							
-				}//FIN if principal de DINOS
-				
-				else {//INICIO del ELSE principal de DINOS
-					
-					
-					contSegundos[i] = contSegundos[i] + 1;
-					
-					if (contSegundos[i]> 600){ 
-						
-					//REAPAREN LOS DINOSUARIOS ELMINADOS CADA 600 TICK
-						
-						int xDinos=780;
-						int yDinos=20;
-						
-						dinosaurios[i]= new Dinosaurio (xDinos,yDinos);
-						contSegundos[i] = 0; //SETEO EN 0 PARA EL PROXIMO DINOSUARIO
-						
-					}
-					
-					
-				}//FIN del ELSE principal de DINOS
-				
-			}// FIN ciclo de DINOSAURIOS
 										
 			
 		
@@ -252,9 +100,7 @@ public class Juego extends InterfaceJuego
 		barbarianna.getX()+barbarianna.getAncho()>=0 && 
 		barbarianna.getX()+barbarianna.getAncho()<= piso.getX() - piso.getAncho()/2)
 		
-	
-			
-	
+
 			return true;
 	
 	
@@ -264,6 +110,7 @@ public class Juego extends InterfaceJuego
 	public boolean choqueRayoLaser(Laser laser, Rayo rayo) {//colision entre reyo de barbariana y los  laser dinos
 		 if (laser == null) 
 	    		return false;
+		 
 		 if (rayo==null)
 			 return false;
 	    	
@@ -273,6 +120,207 @@ public class Juego extends InterfaceJuego
 	    	return false;
 		
 	 }
+	
+	void inicializarBarbarianna () {
+		
+		
+		if (barbarianna !=null) {// If principal de Barbariana
+				
+				
+				this.barbarianna.dibujarse(entorno);
+				
+				// MOVIMIENTO BARBARIANNA
+				if(entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && barbarianna.getX() > 0+barbarianna.getAncho()/2) {
+					barbarianna.moverIzquierda();
+				}
+				
+				if(entorno.estaPresionada(entorno.TECLA_DERECHA) && 
+				   barbarianna.getX()  < entorno.ancho() - barbarianna.getAncho()/2) {
+					barbarianna.moverDerecha();
+				}
+								
+																		
+				if (barbarianna.getRayo() != null) {// DISPARO BARBARIANNA
+					this.barbarianna.efectuarRayo(entorno);	     
+				}
+				
+				if (this.entorno.sePresiono(entorno.TECLA_ESPACIO)) {		
+					if (barbarianna.getRayo() == null)
+						barbarianna.crearRayo(entorno);
+				}
+				
+				
+				//VER FUNCIONALIDADES
+				
+				if (entorno.estaPresionada(entorno.TECLA_ABAJO)) {
+					barbarianna.agacharse();
+					
+	
+				} else {
+					barbarianna.pararse();
+					
+				}
+	
+				if (this.entorno.sePresiono(entorno.TECLA_ARRIBA))
+						barbarianna.saltar();//hace un salto corto				
+				
+				
+				if (barbarianna.enElSuelo()==false ) {
+					barbarianna.caida();// CHEQUEAR NOMBRE "CAIDA"
+				}
+				
+			
+				
+			} // FIN del if principal Barbarianna 
+		
+	}
+	
+	void inicializarPisos() {
+		// DIBUJAMOS los pisos
+				for (int i = 0; i < pisos.length; i++) {
+					if(this.pisos[i] != null)
+						this.pisos[i].dibujarPiso(entorno);
+				}
+				
+	}
+	
+	
+	
+	 public boolean choqueLaserBarbarianna (Barbarianna barb, Laser laser) {//CUANDO EL LASER DE LOS DINOS TOCA A BARBARIANNA PIE
+	    	
+		 if (laser == null) 
+	    	return false;
+	    	
+	     if(Math.abs(barb.getX()-laser.getX())<=15 && Math.abs(barb.getY()-laser.getY())<=27){
+		        return true;
+		    }
+	    	return false;
+	    }
+	
+	void inicializarDinosaurios () {
+
+		for (int i=0;i<this.dinosaurios.length;i++) {// INICIO ciclo de DINOSAURIOS
+			
+			if (dinosaurios[i]!=null) { // INICIO if principal de DINOS
+				
+				this.dinosaurios[i].dibujarse(entorno);
+				
+
+				// INICIO MOVIMIENTOS DE LOS DINOSAURIOS
+				
+				if (this.dinosaurios[i].getX() > 0+ this.dinosaurios[i].getAncho()/2 && tocaBordeYDinos[i]==false) 
+					this.dinosaurios[i].moverIzquierda() ;
+				
+				
+				if (this.dinosaurios[i].getX()==14)//Verifica toca el extremo izq del eje y
+					tocaBordeYDinos[i]=true;
+				
+				
+				if (tocaBordeYDinos[i]==true) {
+					
+					if (this.dinosaurios[i].getX() < entorno.ancho() - this.dinosaurios[i].getAncho()/2)
+						this.dinosaurios[i].moverDerecha() ;
+					
+						}
+				
+				if (this.dinosaurios[i].getX()==786) //Verifica toca el extremo derecho del eje y
+					tocaBordeYDinos[i]=false;
+				
+				// FIN MOVIMIENTOS DE LOS DINOSUARIOS
+				
+				
+				if (dinosaurios[i]!=null) {
+					//VERIFICA SI EL DISPARO DEL RAYO DE BARBARIANNA COLOSIONA CONTRA UN DINISARIOS Y LO ELIMINA 
+					if (barbarianna != null && this.dinosaurios[i].choqueRayoDino(barbarianna.getRayo())) {
+						
+						
+						barbarianna.setRayo(null);
+						this.dinosaurios[i] = null;
+						this.puntos++; // cuenta los dinos muertos
+					
+						}
+				
+					}
+				
+				 // COLISION ENTRE EL LASER DE LOS DINOS CONTRA BARBARIANNA 
+				
+				 /*if (this.barbarianna!=null && barbarianna.choqueLaserBarbarianna(this.dinosaurios[i].getLaser()))
+						
+						this.dinosaurios[i].setLaser(null);
+						this.vidas--;
+					*/
+					
+				  if (this.choqueLaserBarbarianna(this.barbarianna, this.dinosaurios[i].getLaser())) {
+					  this.dinosaurios[i].setLaser(null);
+					  this.vidas--;
+					  this.barbarianna = new Barbarianna(30, 570);
+				  }
+					
+				  if (dinosaurios[i]!=null) {
+					  
+						if(this.dinosaurios[i].enElSuelo()==false) {
+							this.dinosaurios[i].caida();
+						}
+						
+						// INICIO DISPARO DINOS
+						
+						if (i==0) {// solo dispara un dinosuario
+								
+							// INICIO DISPARO DINOS	
+							
+							if (this.dinosaurios[i].getLaser() == null && this.dinosaurios[i].enElSuelo())  								
+								
+								this.dinosaurios[i].crearLaser(entorno);
+							
+
+							if (this.dinosaurios[i].getLaser()!=null )
+								
+								this.dinosaurios[i].efectuarLaser(entorno);
+							
+							}// FIN disparo dinos
+						
+				
+						
+							// COLISION ENTRE PERSONAJES
+							if (this.dinosaurios[i].choqueBarbariannaDino(barbarianna)) {
+							//BARBARINA TOCA UN DINO O LA TOCAN A ELLA, PIERDE UNA VIDA
+									
+								this.vidas--;
+								this.barbarianna = new Barbarianna(30, 570);
+								
+							}
+				
+						
+				  		}
+				  
+		
+						
+											
+						
+			}//FIN if principal de DINOS
+			
+			else {//INICIO del ELSE principal de DINOS
+				
+				
+				contSegundos[i] = contSegundos[i] + 1;
+				
+				if (contSegundos[i]> 600){ 
+					
+				//REAPAREN LOS DINOSUARIOS ELMINADOS CADA 600 TICK
+					
+					int xDinos=780;
+					int yDinos=20;
+					
+					dinosaurios[i]= new Dinosaurio (xDinos,yDinos);
+					contSegundos[i] = 0; //SETEO EN 0 PARA EL PROXIMO DINOSUARIO
+					
+				}
+				
+				
+			}//FIN del ELSE principal de DINOS
+			
+		}// FIN ciclo de DINOSAURIOS
+	}
 
 
 	@SuppressWarnings("unused")
