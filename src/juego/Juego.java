@@ -263,7 +263,7 @@ public class Juego extends InterfaceJuego
 					this.disparoDinos(i);
 					this.colisiones(i);
 					  
-					if (barbarianna!= null && this.dinosaurios[i]!= null && this.vidas==0 || this.colisionComputadora(barbarianna, computadora)) {
+					if (barbarianna!= null && this.dinosaurios[i]!= null && this.vidas==0) {
 							
 						this.entorno.removeAll();
 				  		this.GameOver();
@@ -425,15 +425,8 @@ public class Juego extends InterfaceJuego
 				if( this.dinosaurios[i]!=null && this.dinosaurios[i].getX()<=20 && this.dinosaurios[i].getY()>=550)
 					this.dinosaurios[i]=null;
 				
-				/*
-				if ( this.computadora!=null && this.colisionComputadora(barbarianna, computadora)) {
-					
-					this.computadora=null;
-				}*/
+			
 				
-			
-			
-			
 		}
 	
 	
