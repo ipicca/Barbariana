@@ -96,6 +96,8 @@ public class Juego extends InterfaceJuego
 	
 	
 	public void tableroGame () {
+		//fondo del juego
+		this.entorno.dibujarImagen(Herramientas.cargarImagen("images/fondo5.png"), 400, 300, 0);
 		
 		//kills Dinosuarios
 		entorno.cambiarFont(Font.SANS_SERIF, 20, Color.RED);
