@@ -1,10 +1,9 @@
 package juego;
 import java.awt.Color;
 import java.awt.Image;
+
 import entorno.Entorno;
 import entorno.Herramientas;
-//import java.awt.Image;
-
 public class Rayo {
 	private int x;
     private int y;
@@ -16,8 +15,8 @@ public class Rayo {
         this.x = x;
         this.y = y;
         this.direccion = direccion;
-        //this.imagen = Herramientas.cargarImagen("images/rayo.png");
-        this.diametro = 15;
+        this.imagen = Herramientas.cargarImagen("images/rayo.png");
+        this.diametro = 11;
     }
 
     public int getX() {
@@ -42,8 +41,8 @@ public class Rayo {
 
 
     public void dibujarse(Entorno entorno) {
-       // entorno.dibujarImagen(imagen, this.x, this.y, 0, 0.07);
-    	entorno.dibujarCirculo(this.x, this.y, this.diametro, Color.YELLOW);
+       entorno.dibujarImagen(imagen, this.x, this.y, 0, 0.3);
+    	//entorno.dibujarCirculo(this.x, this.y, this.diametro, Color.YELLOW);
 }
 
 }
