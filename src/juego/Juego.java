@@ -321,11 +321,6 @@ public class Juego extends InterfaceJuego
 		this.entorno.dibujarImagen(Herramientas.cargarImagen("images/puntos.png"), 310, 480, 0, 0.33);
 		// ...
 		
-		
-		
-		
-		
-		
 	}
 	
 	
