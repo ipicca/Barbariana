@@ -18,8 +18,8 @@ public class Laser {
         this.x = x;
         this.y = y;
         this.direccion = direccion;
-       // this.imagen = Herramientas.cargarImagen("images/.png");
-        this.diametro = 15;
+        this.imagen = Herramientas.cargarImagen("images/laser.png");
+        this.diametro = 11;
     }
 
     public int getX() {
@@ -35,15 +35,16 @@ public class Laser {
     }
 
     void moverIzquierda() {
-        this.x = this.x - 6;
+        this.x = this.x - 4;
     }
 
     void moverDerecha() {
-        this.x = this.x + 6;
+        this.x = this.x + 4;
     }
 
     public void dibujarse(Entorno entorno) {
-       // entorno.dibujarImagen(imagen, this.x, this.y, 0, 0.07);
-    	entorno.dibujarCirculo(this.x, this.y, this.diametro, Color.red);
+        entorno.dibujarImagen(imagen, this.x, this.y, 0, 0.3);
+    	//entorno.dibujarCirculo(this.x, this.y, this.diametro, Color.red);
 }
 }
+
