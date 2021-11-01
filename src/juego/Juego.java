@@ -332,20 +332,15 @@ public class Juego extends InterfaceJuego
 		if (this.dinosaurios[i].getX() > 0+ this.dinosaurios[i].getAncho()/2 && tocaBordeYDinos[i]==false) 
 			this.dinosaurios[i].moverIzquierda() ;
 		
-		
-		if (this.dinosaurios[i].getX()==14)//Verifica toca el extremo izq del eje y
-			tocaBordeYDinos[i]=true;
-		
-		
-		if (tocaBordeYDinos[i]==true) {
+		if (this.dinosaurios[i].getX()<=15)//Verifica toca el extremo izq del eje y
+				tocaBordeYDinos[i]=true;
 			
-			if (this.dinosaurios[i].getX() < entorno.ancho() - this.dinosaurios[i].getAncho()/2)
+		if (this.dinosaurios[i].getX() < entorno.ancho() - this.dinosaurios[i].getAncho()/2 && tocaBordeYDinos[i]==true)
 				this.dinosaurios[i].moverDerecha() ;
-			
-				}
-		
-		if (this.dinosaurios[i].getX()==786) //Verifica toca el extremo derecho del eje y
-			tocaBordeYDinos[i]=false;
+				
+	
+		if (this.dinosaurios[i].getX()>=780) //Verifica toca el extremo derecho del eje y
+				tocaBordeYDinos[i]=false;
 
 		if(this.dinosaurios[i].enElSuelo()==false) {
 			this.dinosaurios[i].caida();
@@ -422,7 +417,7 @@ public class Juego extends InterfaceJuego
 					}
 				
 				//VEREIFICA SI EL DINOSAURIO TOCA EXTREMO IZQUIERDO DEL PRIMER PISO 
-				if( this.dinosaurios[i]!=null && this.dinosaurios[i].getX()<=20 && this.dinosaurios[i].getY()>=550)
+				if( this.dinosaurios[i]!=null && this.dinosaurios[i].getX()<=21 && this.dinosaurios[i].getY()>=550)
 					this.dinosaurios[i]=null;
 				
 			

@@ -42,14 +42,14 @@ public class Dinosaurio {
 	}
 
 	void moverIzquierda() {
-		this.x = this.x - 2;
+		this.x = this.x - 3;
 		this.imagen= Herramientas.cargarImagen("images/dino_izq.png");
 		this.direccion = "izquierda";
 		
 	}
 
 	void moverDerecha() {
-		this.x = this.x + 2;
+		this.x = this.x + 3;
 		this.imagen= Herramientas.cargarImagen("images/dino_der.png");
 		this.direccion = "derecha";
 		
