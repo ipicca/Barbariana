@@ -16,7 +16,7 @@ public class Juego extends InterfaceJuego
 	private Entorno entorno;
 	private Barbarianna barbarianna;
 	private Piso[] pisos = new Piso[4]; // null 
-	private Dinosaurio [] dinosaurios= new Dinosaurio[1];
+	private Dinosaurio [] dinosaurios= new Dinosaurio[4];
 	private Computadora computadora;
 	private Estrella estrella;
 	private Boss_dino boss_dino;
