@@ -401,7 +401,7 @@ public class Juego extends InterfaceJuego
 				//BARBARINA TOCA UN DINO O LA TOCAN A ELLA, PIERDE UNA VIDA
 						
 					this.vidas--;
-					this.barbarianna = new Barbarianna(30, 570);
+					this.barbarianna = new Barbarianna(30, 560);
 					
 				}
 				
