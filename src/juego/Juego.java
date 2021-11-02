@@ -154,6 +154,8 @@ public class Juego extends InterfaceJuego
 		this.entorno.dibujarImagen(Herramientas.cargarImagen("images/vida.png"), 117, 20, 0, 0.06);
 		this.entorno.dibujarImagen(Herramientas.cargarImagen("images/puntos.png"), 223, 22, 0, 0.15);
 		
+		vidaBoss();
+		
 	}
 	
 	
@@ -200,7 +202,7 @@ public class Juego extends InterfaceJuego
 		
 		void inicilizarBossDino() {
 			
-			vidaBoss();
+		
 			
 	        if (contEstrellas == 2 && this.boss_dino != null) {
 	        	
