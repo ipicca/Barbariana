@@ -121,6 +121,15 @@ public class Juego extends InterfaceJuego
 		
 	}//FINAL DEL TICK
 	
+	public void vidaBoss() {
+		
+		
+		this.entorno.dibujarImagen(Herramientas.cargarImagen("images/vidaBoss.png"), 650, 20, 0,0.33);
+		
+		//kills Dinosuarios
+		entorno.cambiarFont(Font.SANS_SERIF, 20, Color.orange);
+		entorno.escribirTexto(" " + this.vidasBoss, 680, 28);
+	}
 	
 	
 	public void tableroGame () {
@@ -190,6 +199,8 @@ public class Juego extends InterfaceJuego
 		
 		
 		void inicilizarBossDino() {
+			
+			vidaBoss();
 			
 	        if (contEstrellas == 2 && this.boss_dino != null) {
 	        	
@@ -439,8 +450,8 @@ public class Juego extends InterfaceJuego
 					  
 					if (barbarianna!= null && this.dinosaurios[i]!= null && this.vidas==0) {
 						
-				
-						this.entorno.removeAll();
+						this.boss_dino=null;
+						this.entorno.removeAll(); 
 				  		this.GameOver();
 				  			
 				  		}
