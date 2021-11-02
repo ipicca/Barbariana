@@ -49,7 +49,7 @@ public class Boss_dino {
 
 	void moverDerecha() {
 		this.x = this.x + 2;
-		this.imagen = Herramientas.cargarImagen("images/DinoBoss_der_.png");
+		this.imagen = Herramientas.cargarImagen("images/DinoBoss_der.png");
 		this.direccion = "derecha";
 		
 	}

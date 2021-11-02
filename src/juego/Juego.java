@@ -4,10 +4,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.util.Random;
-
+import java.net.*;
+import java.io.*;
+import java.util.*;
 import entorno.Entorno;
 import entorno.Herramientas;
 import entorno.InterfaceJuego;
+
+import javax.sound.sampled.Clip;
+
 
 public class Juego extends InterfaceJuego
 {
@@ -17,13 +22,24 @@ public class Juego extends InterfaceJuego
 	private Piso[] pisos = new Piso[4]; // null 
 	private Dinosaurio [] dinosaurios= new Dinosaurio[4];
 	private Computadora computadora;
+	private Estrella estrella;
+	private Boss_dino boss_dino;
+	private Clip sonidoFinal;
+	private Clip musicaFondo;
+	private Clip finalFeliz;
 	
+	private boolean tocaBordeYBoss = false;
 	private boolean[] tocaBordeYDinos = { false, false, false, false };
 	private int dinosMuertos=0;
 	private int puntos=0;
 	private int vidas=3;
 	private int aparicionDinos=0;
-	private Image imagen;
+	private int contEstrellas = 0;
+	private int aparicionBoss = 0;
+	private int contVidasBoss =0;
+	
+	
+	//private Image imagen;
 
 	
 
@@ -45,10 +61,20 @@ public class Juego extends InterfaceJuego
 		
 		this.computadora= new Computadora (500,93);
 		
+		this.estrella = new Estrella (400,570); 
+		
 		this.barbarianna = new Barbarianna(30, 570);
+		
+		this.boss_dino = new Boss_dino (750,80);
 		
 		int xDinos=750;
 		int yDinos=60;
+		
+		this.sonidoFinal = Herramientas.cargarSonido("sonidos/Final.wav");
+		this.musicaFondo= Herramientas.cargarSonido("sonidos/Juego.wav");
+		this.finalFeliz = Herramientas.cargarSonido("sonidos/FinalFeliz.wav");
+		Herramientas.cargarSonido("sonidos/rayo.wav");
+		Herramientas.cargarSonido("sonidos/jump.wav");
 		
 		for (int i=0;i<this.dinosaurios.length;i++) {
 	
@@ -61,6 +87,7 @@ public class Juego extends InterfaceJuego
 	
 		// Inicia el juego!
 		this.entorno.iniciar();
+		musicaFondo.start();
 	}
 
 	/**
@@ -73,8 +100,6 @@ public class Juego extends InterfaceJuego
 	{//INICIO DEL TICK
 		// Procesamiento de un instante de tiempo
 		
-	
-		
 		
 		//CREAMOS A LOS INTERVINIENTES
 		this.tableroGame();
@@ -83,6 +108,8 @@ public class Juego extends InterfaceJuego
 		this.inicializarComputadora();
 		this.inicializarBarbarianna();
 		this.inicializarDinosaurios();
+		this.inicializarEstrella();
+		this.inicilizarBossDino();
 		
 		if (this.colisionComputadora(barbarianna, computadora)) {
 			
@@ -90,6 +117,9 @@ public class Juego extends InterfaceJuego
 	  		this.Ganador();
 	  			
 	  		}
+		
+		
+		
 		
 	}//FINAL DEL TICK
 	
@@ -133,8 +163,7 @@ public class Juego extends InterfaceJuego
 	return false;
 	}
 	
-	void inicializarComputadora () {
-		
+	void inicializarComputadora () {	
 		
 		if (this.computadora!=null)
 			this.computadora.dibujarse(entorno);
@@ -143,9 +172,113 @@ public class Juego extends InterfaceJuego
 		
 		if (this.computadora.estaEnPosY()==false)
 			this.computadora.caida();
-	
 	}
 
+		void inicializarEstrella() {
+			
+			if (this.estrella !=null) {
+				this.estrella.dibujarse(entorno);
+			}
+	        
+	        if (this.estrella!=null && this.choqueBarbarianaEstrella(this.barbarianna, this.estrella)) {
+	            		
+	        	   		contEstrellas++;
+	        	   		
+	                    this.puntos = this.puntos + 20;
+	                    this.estrella = new Estrella (300,330);
+	                 
+	        }
+		}
+		
+		
+		void inicilizarBossDino() {
+			
+	        if (contEstrellas == 2 && this.boss_dino != null) {
+	        	
+	        	//FUNCIONES BOSS DINO
+	        	
+	        	this.estrella=null;
+	        	this.boss_dino.dibujarse(entorno);
+	        	movimientoBoss();       	
+	        	disparoBoss();
+	        	nvBoss();
+
+	    		}
+	        
+	        else {
+	        	
+	        	reaparecerBoss();
+	        	
+	        		}				
+	    	}
+	
+	
+		void disparoBoss() {
+			if (this.boss_dino!= null && this.boss_dino.getLaser() == null && this.boss_dino.enElSuelo())  													
+				this.boss_dino.crearLaser(entorno);
+
+    			if (this.boss_dino.getLaser()!=null )					
+				this.boss_dino.efectuarLaser(entorno);
+		}
+	        
+		void movimientoBoss() {
+			
+			if (this.boss_dino != null) {
+			
+			if (this.boss_dino.getX() > 0 + this.boss_dino.getAncho()/2 && tocaBordeYBoss==false) 
+    			this.boss_dino.moverIzquierda() ;
+    		   		
+    		if (this.boss_dino.getX() <= 50)//Verifica toca el extremo izq del eje y
+    			tocaBordeYBoss=true;
+    		
+    		if (tocaBordeYBoss==true) {
+    			
+    			if (this.boss_dino.getX() < entorno.ancho() - this.boss_dino.getAncho()/2)
+    				this.boss_dino.moverDerecha();
+    			
+    				}
+   		
+    		if (this.boss_dino.getX()>=750) //Verifica toca el extremo derecho del eje y
+    			tocaBordeYBoss=false;
+
+    		if(this.boss_dino.enElSuelo()==false) {
+    			this.boss_dino.caida();
+    			}
+		}
+		}
+	        	
+	          
+		void nvBoss(){
+			
+			if( this.boss_dino!=null && this.boss_dino.getX() <=100 && this.boss_dino.getY()>=550 ) {
+				
+				this.boss_dino=null;
+				
+			}
+		}
+		 
+		void reaparecerBoss() {
+			
+			if (contVidasBoss < 3) {
+			aparicionBoss++;
+		
+			if (aparicionBoss > 400){ 
+				
+			//REAPAREN LOS DINOSUARIOS ELMINADOS CADA 400 TICK
+				
+				boss_dino= new Boss_dino (750,80);	
+				aparicionBoss=0;
+				
+				}
+			}	
+		}			
+	
+
+			
+		
+			
+		
+	
 	
 	void inicializarBarbarianna () {
 		
@@ -166,12 +299,15 @@ public class Juego extends InterfaceJuego
 								
 																		
 				if (barbarianna.getRayo() != null) {// DISPARO BARBARIANNA
-					this.barbarianna.efectuarRayo(entorno);	     
+					this.barbarianna.efectuarRayo(entorno);
 				}
 				
 				if (this.entorno.sePresiono(entorno.TECLA_ESPACIO)) {		
-					if (barbarianna.getRayo() == null)
+					if (barbarianna.getRayo() == null) {
 						barbarianna.crearRayo(entorno);
+						Herramientas.play("sonidos/rayo.wav");
+					}
+						
 				}
 				
 				
@@ -193,9 +329,11 @@ public class Juego extends InterfaceJuego
 						(estaDentroPiso(pisos[0]) ||
 						estaDentroPiso(pisos[1]) ||
 						estaDentroPiso(pisos[2])||
-						estaDentroPiso(pisos[3])))
+						estaDentroPiso(pisos[3]))) {
 						barbarianna.subirPiso();
-				
+						Herramientas.play("sonidos/jump.wav");
+						
+				}
 				
 				if (barbarianna.enElSuelo()==false ) {
 					barbarianna.caida();// CHEQUEAR NOMBRE "CAIDA"
@@ -221,6 +359,16 @@ public class Juego extends InterfaceJuego
 				
 	}
 	
+	public boolean choqueBarbarianaEstrella (Barbarianna barbarianna, Estrella estrella) {//Cuando barbariana toca una estrella
+    	
+		 if (estrella == null) 
+	    	return false;
+	    	
+	     if(Math.abs(barbarianna.getX()-estrella.getX())<=20 && Math.abs(barbarianna.getY()-estrella.getY())<=27){ //TODO
+		        return true;
+		    }
+	    	return false;
+	    }
 	
 	
 	 public boolean choqueLaserBarbarianna (Barbarianna barb, Laser laser) {//CUANDO EL LASER DE LOS DINOS TOCA A BARBARIANNA PIE
@@ -264,7 +412,8 @@ public class Juego extends InterfaceJuego
 					this.colisiones(i);
 					  
 					if (barbarianna!= null && this.dinosaurios[i]!= null && this.vidas==0) {
-							
+						
+						this.boss_dino=null;
 						this.entorno.removeAll();
 				  		this.GameOver();
 				  			
@@ -274,7 +423,7 @@ public class Juego extends InterfaceJuego
 			
 			else {//INICIO del ELSE principal de DINOS
 				
-					this.reaPareserDinos(i);
+					this.reaParecerDinos(i);
 	
 				
 			}//FIN del ELSE principal de DINOS
@@ -303,6 +452,8 @@ public class Juego extends InterfaceJuego
 		
 		this.entorno.dibujarImagen(Herramientas.cargarImagen("images/dinosmuertos.png"), 270, 400, 0,0.3);
 		this.entorno.dibujarImagen(Herramientas.cargarImagen("images/puntos.png"), 310, 480, 0, 0.33);
+		musicaFondo.stop();
+		sonidoFinal.start();
 		
 
 	}
@@ -321,6 +472,8 @@ public class Juego extends InterfaceJuego
 		entorno.cambiarFont(Font.SANS_SERIF, 50, Color.magenta);
 		entorno.escribirTexto( " " + this.puntos, 410, 498);
 		this.entorno.dibujarImagen(Herramientas.cargarImagen("images/puntos.png"), 310, 480, 0, 0.33);
+		musicaFondo.stop();
+		finalFeliz.start();
 		// ...
 		
 	}
@@ -332,15 +485,20 @@ public class Juego extends InterfaceJuego
 		if (this.dinosaurios[i].getX() > 0+ this.dinosaurios[i].getAncho()/2 && tocaBordeYDinos[i]==false) 
 			this.dinosaurios[i].moverIzquierda() ;
 		
+		
 		if (this.dinosaurios[i].getX()<=15)//Verifica toca el extremo izq del eje y
-				tocaBordeYDinos[i]=true;
+			tocaBordeYDinos[i]=true;
+		
+		
+		if (tocaBordeYDinos[i]==true) {
 			
-		if (this.dinosaurios[i].getX() < entorno.ancho() - this.dinosaurios[i].getAncho()/2 && tocaBordeYDinos[i]==true)
+			if (this.dinosaurios[i].getX() < entorno.ancho() - this.dinosaurios[i].getAncho()/2)
 				this.dinosaurios[i].moverDerecha() ;
-				
-	
+			
+				}
+		
 		if (this.dinosaurios[i].getX()>=780) //Verifica toca el extremo derecho del eje y
-				tocaBordeYDinos[i]=false;
+			tocaBordeYDinos[i]=false;
 
 		if(this.dinosaurios[i].enElSuelo()==false) {
 			this.dinosaurios[i].caida();
@@ -351,7 +509,7 @@ public class Juego extends InterfaceJuego
 	
 	
 		void disparoDinos(int i) {
-			if (i==3) {// solo dispara un dinosuario
+			if (i>=0) {// solo dispara un dinosuario
 				
 				// INICIO DISPARO DINOS	
 				
@@ -360,10 +518,11 @@ public class Juego extends InterfaceJuego
 					this.dinosaurios[i].crearLaser(entorno);
 				
 	
-				if (this.dinosaurios[i].getLaser()!=null )
+				if (this.dinosaurios[i].getLaser()!=null ) 
 					
 					this.dinosaurios[i].efectuarLaser(entorno);
-				
+					
+					
 				}// FIN disparo dinos
 			
 				
@@ -401,8 +560,13 @@ public class Juego extends InterfaceJuego
 				//BARBARINA TOCA UN DINO O LA TOCAN A ELLA, PIERDE UNA VIDA
 						
 					this.vidas--;
-					this.barbarianna = new Barbarianna(30, 560);
+					this.barbarianna = new Barbarianna(30, 570);
 					
+				}
+				
+				if (this.boss_dino!=null && this.boss_dino.choqueBarbariannaBoss_dino(barbarianna)) {
+					this.vidas--;
+					this.barbarianna = new Barbarianna(30, 570);
 				}
 				
 				//VERIFICA SI EL DISPARO DEL RAYO DE BARBARIANNA COLOSIONA CONTRA UN DINISARIOS Y LO ELIMINA 
@@ -416,18 +580,39 @@ public class Juego extends InterfaceJuego
 				
 					}
 				
+				if (boss_dino!=null && barbarianna !=null && this.boss_dino.choqueRayoBoss_dino(barbarianna.getRayo())) {
+					barbarianna.setRayo(null);
+					if ( boss_dino!=null && contVidasBoss == 3) {
+						this.boss_dino = null;
+						this.puntos+=50;
+							}
+					else {
+						contVidasBoss ++;
+					}				
+				}
+				
+				if ( this.boss_dino!=null && this.choqueLaserBarbarianna(this.barbarianna, this.boss_dino.getLaser())) {
+					  this.boss_dino.setLaser(null);
+					  this.vidas--;
+					  this.barbarianna = new Barbarianna(30, 570);
+				  }
+				
 				//VEREIFICA SI EL DINOSAURIO TOCA EXTREMO IZQUIERDO DEL PRIMER PISO 
 				if( this.dinosaurios[i]!=null && this.dinosaurios[i].getX()<=21 && this.dinosaurios[i].getY()>=550)
 					this.dinosaurios[i]=null;
-				
 			
-				
+				//COLISION LASER-BOSS-BARBARIANNA
+				if ( this.boss_dino!=null && this.choqueLaserBarbarianna(this.barbarianna, this.boss_dino.getLaser())) {
+					  this.boss_dino.setLaser(null);
+					  this.vidas--;
+					  this.barbarianna = new Barbarianna(30, 570);
+				  }
 		}
 	
 	
 
 	
-	void reaPareserDinos(int i) {
+	void reaParecerDinos(int i) {
 		
 		aparicionDinos++;
 	
