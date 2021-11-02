@@ -24,9 +24,7 @@ public class Juego extends InterfaceJuego
 	private Computadora computadora;
 	private Estrella estrella;
 	private Boss_dino boss_dino;
-	private Clip sonidoFinal;
-	private Clip musicaFondo;
-	private Clip finalFeliz;
+
 	
 	private boolean tocaBordeYBoss = false;
 	private boolean[] tocaBordeYDinos = { false, false, false, false };
@@ -37,6 +35,10 @@ public class Juego extends InterfaceJuego
 	private int contEstrellas = 0;
 	private int aparicionBoss = 0;
 	private int contVidasBoss =0;
+	
+	private Clip sonidoFinal;
+	private Clip musicaFondo;
+	private Clip finalFeliz;
 	
 	
 	//private Image imagen;
@@ -509,7 +511,7 @@ public class Juego extends InterfaceJuego
 	
 	
 		void disparoDinos(int i) {
-			if (i>=0) {// solo dispara un dinosuario
+			if (i==1) {// solo dispara un dinosuario
 				
 				// INICIO DISPARO DINOS	
 				
@@ -526,8 +528,8 @@ public class Juego extends InterfaceJuego
 				}// FIN disparo dinos
 			
 				
-				/*
-				if (i==1) {// solo dispara un dinosuario
+				
+				if (i==3) {// solo dispara un dinosuario
 				
 				// INICIO DISPARO DINOS	
 				
@@ -542,7 +544,7 @@ public class Juego extends InterfaceJuego
 				
 				}// FIN disparo dinos
 			
-				 */
+				 
 		}
 		
 	void colisiones(int i) {
@@ -582,6 +584,7 @@ public class Juego extends InterfaceJuego
 				
 				if (boss_dino!=null && barbarianna !=null && this.boss_dino.choqueRayoBoss_dino(barbarianna.getRayo())) {
 					barbarianna.setRayo(null);
+					
 					if ( boss_dino!=null && contVidasBoss == 3) {
 						this.boss_dino = null;
 						this.puntos+=50;

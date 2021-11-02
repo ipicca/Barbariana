@@ -122,7 +122,7 @@ public class Boss_dino {
 			if (rayo == null) 
 		    		return false;
 		    	
-		    if(Math.abs(this.x-rayo.getX())<=15 && Math.abs(this.y-rayo.getY())<=27){
+		    if(Math.abs(this.x-rayo.getX())<=22 && Math.abs(this.y-rayo.getY())<=30){
 			        return true;
 			    }
 		    
